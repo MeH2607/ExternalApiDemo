@@ -45,12 +45,15 @@ public class NameDataService {
     }
 
     public NameData findNameData(String name) {
+        //Henter de 3 monos asynkront
     Mono<AgifyDTO> agifyDTOMono = getAgifyData(name);
     Mono<GenderizeDTO> genderizeDTOMono = getGenderizeData(name);
     Mono<NationalizeDTO> nationalizeDTOMono = getNationalizeData(name);
         NameData nameData = new NameData();
+        //mono.zip kombinerer de 3 monoer til en mono og mapper det til en tuple
     var rs = Mono.zip(agifyDTOMono, genderizeDTOMono, nationalizeDTOMono).map(tuple -> {
 
+        //setter dataene fra de 3 monoene ind i nameData
         nameData.setName(name);
         nameData.setGender(tuple.getT2().getGender());
         nameData.setGenderProbability(tuple.getT2().getProbability() * 100);

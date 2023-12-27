@@ -76,7 +76,9 @@ public class RemoteApiTester implements CommandLineRunner {
 
     List<String> names = Arrays.asList("lars", "peter", "sanne", "kim", "david", "maja");
 
+    //Disse to metoder lører getGenderForName for alle navnene i listen names.
 
+    //Blocking metode, kører navnene en efter en
     public void getGendersBlocking() {
         long start = System.currentTimeMillis();
         List<Gender> genders = names.stream().map(name -> getGenderForName(name).block()).toList();
@@ -84,6 +86,7 @@ public class RemoteApiTester implements CommandLineRunner {
         System.out.println("Time for six external requests, BLOCKING: "+ (end-start));
     }
 
+    //Non-blocking metode, kører navnene samtidig
     public void getGendersNonBlocking() {
         long start = System.currentTimeMillis();
         var genders = names.stream().map(name -> getGenderForName(name)).toList();
